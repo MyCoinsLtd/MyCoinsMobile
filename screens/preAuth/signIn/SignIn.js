@@ -25,9 +25,6 @@ const SignIn = ({navigation}) => {
         navigation.navigate('signUp');
     }
 
-    if (!fontsLoaded) {
-        return <AppLoading />;
-      } else {
         return (
             <View style={styles.container}>
                 <ImageBackground source={require('../../../assets/background/background.png')} resizeMode="cover" style={styles.backgroundImage}>
@@ -113,7 +110,6 @@ const SignIn = ({navigation}) => {
             </View>
             
         )
-      }
 }
 
 const styles = StyleSheet.create({

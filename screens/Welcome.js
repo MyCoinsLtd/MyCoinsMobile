@@ -21,9 +21,9 @@ const Welcome = ({navigation}) => {
         Manrope_500Medium,
         Manrope_800ExtraBold
     });
-    if (!fontsLoaded) {
-        return <AppLoading />;
-      } else {
+    // if (!fontsLoaded) {
+    //     return <AppLoading />;
+    //   } else {
         return (
             <View style={styles.container}>
                 <ImageBackground source={require('../assets/background/background.png')} resizeMode="cover" style={styles.backgroundImage}>
@@ -49,7 +49,7 @@ const Welcome = ({navigation}) => {
                 </ImageBackground>
             </View>
         )
-    }
+    // }
 }
 
 const styles = StyleSheet.create({

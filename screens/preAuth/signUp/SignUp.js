@@ -23,9 +23,9 @@ const SignUp = ({navigation}) => {
       navigation.navigate('signUpEmail');
     }
 
-    if (!fontsLoaded) {
-      return <AppLoading />;
-    } else {
+    // if (!fontsLoaded) {
+    //   return <AppLoading />;
+    // } else {
       return (
           <View style={styles.container}>
               <ImageBackground source={require('../../../assets/background/background-1.png')} resizeMode="cover" style={styles.backgroundImage}>
@@ -86,7 +86,7 @@ const SignUp = ({navigation}) => {
               </ImageBackground>
           </View>
       )
-    }
+    // }
 }
 
 const styles = StyleSheet.create({

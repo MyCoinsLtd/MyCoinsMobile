@@ -28,9 +28,9 @@ const SignUpEmail = ({navigation}) => {
     const [isPasswordConfirmSecure, setIsPasswordConfirmSecure] = useState(true);
 
 
-    if (!fontsLoaded) {
-      return <AppLoading />;
-    } else {
+    // if (!fontsLoaded) {
+    //   return <AppLoading />;
+    // } else {
       return (
           <View style={styles.container}>
               <ImageBackground source={require('../../../assets/background/background-2.png')} resizeMode="cover" style={styles.backgroundImage}>
@@ -103,7 +103,7 @@ const SignUpEmail = ({navigation}) => {
               </ImageBackground>
           </View>
       )
-    }
+    // }
 }
 
 const styles = StyleSheet.create({

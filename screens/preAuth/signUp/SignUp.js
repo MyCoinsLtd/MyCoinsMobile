@@ -6,7 +6,7 @@ import {
     Manrope_600SemiBold,
     Manrope_800ExtraBold
   } from '@expo-google-fonts/manrope';
-import AppLoading from 'expo-app-loading';
+import Loader from "../../components/Loader";
 
 const SignUp = ({navigation}) => {
 
@@ -24,7 +24,7 @@ const SignUp = ({navigation}) => {
     }
 
     if (!fontsLoaded) {
-      return <AppLoading />;
+      return <Loader />;
     } else {
       return (
           <View style={styles.container}>

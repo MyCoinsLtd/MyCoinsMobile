@@ -5,7 +5,7 @@ import {
     Manrope_500Medium,
     Manrope_800ExtraBold
   } from '@expo-google-fonts/manrope';
-import AppLoading from 'expo-app-loading';
+import Loader from './components/Loader';
 
 
 const Welcome = ({navigation}) => {
@@ -22,7 +22,7 @@ const Welcome = ({navigation}) => {
         Manrope_800ExtraBold
     });
     if (!fontsLoaded) {
-        return <AppLoading />;
+        return <Loader />;
       } else {
         return (
             <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createRef } from "react";
 import { StyleSheet, Text, View , ImageBackground, Image, Pressable } from 'react-native';
 import {
     useFonts,
@@ -6,9 +6,12 @@ import {
     Manrope_600SemiBold,
     Manrope_800ExtraBold
   } from '@expo-google-fonts/manrope';
-import AppLoading from 'expo-app-loading';
 import { TextInput } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loader from "../../components/Loader";
+import axios from 'axios';
+
 
 const SignIn = ({navigation}) => {
 
@@ -18,17 +21,52 @@ const SignIn = ({navigation}) => {
         Manrope_800ExtraBold
     });
 
-    const [password, setPassword] = useState('');  
+    const [userName, setUserName] = useState('');
+    const [userPassword, setUserPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [errortext, setErrortext] = useState('');  
     const [isPasswordSecure, setIsPasswordSecure] = useState(true);
 
     function navigateToSignUp(){
         navigation.navigate('signUp');
     }
+    
+    const handleSubmitPress = async () => {
+        setErrortext('')
+        if(!userName) {
+            alert('Please fill Email')
+            return;
+        }
+        if(!userPassword) {
+            alert('Please fill Password')
+            return;
+        }
+        setLoading(true)
+        
+        try{
+            const response = await axios.post("http://192.168.143.133:8000/api/login/" ,{
+                username : userName,
+                password : userPassword
+            })
+            if(response.data.token){
+                setLoading(false)
+                AsyncStorage.setItem('user_id', response.data.token);
+                console.log(response.data.token);
+            }
+           
+        } catch (error){
+            setLoading(false)
+            setErrortext("Invalid Credential")
+            console.log("Incorrect Credentials Passed.")
+        }
+    }
+
     if (!fontsLoaded) {
-        return <AppLoading />;
+        return <Loader />;
       } else {
         return (
             <View style={styles.container}>
+                <Loader loading={loading} />
                 <ImageBackground source={require('../../../assets/background/background.png')} resizeMode="cover" style={styles.backgroundImage}>
                     <Image
                         style={styles.logo}
@@ -69,19 +107,31 @@ const SignIn = ({navigation}) => {
                             <Text style={styles.breakLineText}>Or with email</Text>
                             <View style={styles.Line} />
                         </View>
+                        {
+                            errortext != '' ? 
+                                <View style={styles.errors}>
+                                    <Text style={styles.errorText}>{errortext}</Text>
+                                </View> 
+                            : null
+                        }
+                        
                         <View style={styles.fields}>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Email address"
+                                placeholder="Username"
                                 theme={{ colors: { text: "black", primary: "#5200FF", background : "transparent" } }}
+                                value={userName}
+                                onChangeText={(UserName) =>
+                                    setUserName(UserName)
+                                  }
                             />
                             <TextInput
                                 style={styles.input}
                                 placeholder="Password"
                                 secureTextEntry={isPasswordSecure}
                                 textContentType="password"
-                                value={password}
-                                onChangeText={text => setPassword(text)}
+                                value={userPassword}
+                                onChangeText={text => setUserPassword(text)}
                                 theme={{ colors: { text: "black", primary: "#5200FF", background : "transparent" } }}
                                 right={
                                     <TextInput.Icon
@@ -92,7 +142,7 @@ const SignIn = ({navigation}) => {
                             <Text style={styles.forgot}>
                                 Forgot Password?
                             </Text>
-                            <Pressable style={styles.loginButton}>
+                            <Pressable style={styles.loginButton} onPress={handleSubmitPress}>
                                 <Text style={styles.loginButtonText}>Sign In</Text>
                             </Pressable>
                             <Text style={styles.cardSignInText}>
@@ -186,7 +236,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         elevation: 3,
         backgroundColor: '#2D0C92',
-        marginTop : 40
+        position : "absolute",
+        top : 200
     },
     loginButtonText: {
         fontSize: 19,
@@ -197,9 +248,12 @@ const styles = StyleSheet.create({
     },
     cardSignInText : {
         fontFamily : "Manrope_500Medium",
-        marginTop : 15,
         fontSize : 15,
-        textAlign : "center"
+        textAlign : "center",
+        position : "absolute",
+        top : 270,
+        left : 25,
+        right : 25
     },
     cardSignInTextLink : {
         fontFamily : "Manrope_800ExtraBold"
@@ -207,9 +261,10 @@ const styles = StyleSheet.create({
     cardSignInButtons : {
         flex: 1,
         flexDirection: 'row',
-        marginTop : 40,
+        marginTop : 140,
         marginLeft : 4,
-        marginRight: 4
+        marginRight: 4,
+        position : "absolute"
     },
     buttonContainer : {
         flex : 1
@@ -221,8 +276,9 @@ const styles = StyleSheet.create({
     },
     breakLine : {
         flexDirection: 'row',
-        marginBottom: 50,
-        alignItems : "center"
+        alignItems : "center",
+        position : "absolute",
+        top : 220
     },
     Line : {
         borderBottomColor: '#D9D9D9',
@@ -238,7 +294,8 @@ const styles = StyleSheet.create({
     },
     fields : {
         flex : 1,
-        marginBottom : 400
+        position : "absolute",
+        top : 320
     },
     input: {
         height: 40,
@@ -254,8 +311,11 @@ const styles = StyleSheet.create({
         paddingRight : 12
     },
     footer: {
-        marginTop : 70,
-        flexDirection : "row"
+        position : "absolute",
+        marginTop : 360,
+        flexDirection : "row",
+        left : 25,
+        right : 25
     },
     privacy : {
         fontFamily : "Manrope_600SemiBold",
@@ -265,6 +325,22 @@ const styles = StyleSheet.create({
         fontFamily : "Manrope_600SemiBold",
         fontSize : 16,
         marginLeft : "auto"
+    },
+    errors : {
+        position: "absolute",
+        top: 270,
+        backgroundColor : "rgba(255, 0, 0, 0.3)",
+        borderRadius : 12,
+        borderColor : "#FF0000",
+        borderWidth : 1,
+        width : 400,
+        height : 50,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    errorText : {
+        fontSize : 16,
+        color : "#CC0000"
     }
 });
 export default SignIn;

@@ -6,9 +6,9 @@ import {
     Manrope_600SemiBold,
     Manrope_800ExtraBold
   } from '@expo-google-fonts/manrope';
-import AppLoading from 'expo-app-loading';
 import { TextInput } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import Loader from "../../components/Loader";
 
 const SignUpEmail = ({navigation}) => {
 
@@ -29,7 +29,7 @@ const SignUpEmail = ({navigation}) => {
 
 
     if (!fontsLoaded) {
-      return <AppLoading />;
+      return <Loader />;
     } else {
       return (
           <View style={styles.container}>
@@ -46,8 +46,20 @@ const SignUpEmail = ({navigation}) => {
                     <View style={styles.fields}>
                         <TextInput
                             style={styles.input}
-                            placeholder="Full Name"
+                            placeholder="First Name"
                             label="First Name"
+                            theme={{ colors: { text: "black", primary: "#5200FF", background : "transparent" } }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Last Name"
+                            label="Last Name"
+                            theme={{ colors: { text: "black", primary: "#5200FF", background : "transparent" } }}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Usename"
+                            label="Username"
                             theme={{ colors: { text: "black", primary: "#5200FF", background : "transparent" } }}
                         />
                         <TextInput
@@ -120,13 +132,13 @@ const styles = StyleSheet.create({
       width: 296,
       height: 296,
       justifyContent: "center",
-      bottom: 600,
+      bottom : 650,
       position: "absolute"
     },
     card : {
       backgroundColor : "#FFF",
       width : 415,
-      height : 700,
+      height : 900,
       top : 190,
       borderRadius : 30,
       alignItems: "center"
@@ -159,7 +171,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         elevation: 3,
         backgroundColor: '#2D0C92',
-        marginTop : 40
+        position : "absolute",
+        top : 440
     },
     loginButtonText: {
         fontSize: 19,
@@ -170,9 +183,12 @@ const styles = StyleSheet.create({
     },
     cardSignInText : {
         fontFamily : "Manrope_500Medium",
-        marginTop : 15,
         fontSize : 15,
-        textAlign : "center"
+        textAlign : "center",
+        position : "absolute",
+        top : 500,
+        left : 25,
+        right : 25
     },
     cardSignInTextLink : {
         fontFamily : "Manrope_800ExtraBold"
@@ -180,7 +196,7 @@ const styles = StyleSheet.create({
     footer: {
         flexDirection : "row",
         position : "absolute",
-        top : 470,
+        top : 560,
         flex : 1,
         left : 25,
         right : 25

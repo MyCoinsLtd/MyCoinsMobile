@@ -19,7 +19,11 @@ const SignUpEmail = ({navigation}) => {
     });
 
     function navigateToSignIn(){
-      navigation.navigate('signIn');
+      navigation.navigate('signIn')
+    }
+
+    function navigateToHome(){
+        navigation.navigate('home')
     }
 
     const [password, setPassword] = useState('');
@@ -96,7 +100,7 @@ const SignUpEmail = ({navigation}) => {
                                     onPress={() => { isPasswordConfirmSecure ? setIsPasswordConfirmSecure(false) : setIsPasswordConfirmSecure(true) }}
                             />}
                         />
-                        <Pressable style={styles.loginButton}>
+                        <Pressable style={styles.loginButton} onPress={navigateToHome}>
                             <Text style={styles.loginButtonText}>Let's get started</Text>
                         </Pressable>
                         <Text style={styles.cardSignInText}>
